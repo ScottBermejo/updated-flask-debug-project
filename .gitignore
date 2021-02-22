@@ -1,7 +1,0 @@
-.env
-app.db
-Procfile
-requirements.txt
-migrations
-.vscode
-__pycache__

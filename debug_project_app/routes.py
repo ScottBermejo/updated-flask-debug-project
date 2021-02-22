@@ -1,4 +1,4 @@
-from debug_project_app import app, Message, mail
+from debug_project_app import app, Message, mail, db
 from flask import render_template, request, redirect, url_for
 
 # Import for Forms
@@ -14,17 +14,17 @@ from flask_login import login_required,login_user, current_user,logout_user
 @app.route('/')
 def home():
     posts = Post.query.all
-    returnrender_template("homes.html", posts = posts)
+    return render_template("home.html", posts = posts)
 
 # Register Route
 @app.route('/register', methods=['GET','POST'])
 def register():
     form = UserInfoForm()
-    if request.method = 'POST' and form.validate():
+    if request.method == 'POST' and form.validate():
         # Get Information
         username = form.username.data
         password = form.password.data
-        email = form.email
+        email = form.email.data
         print("\n",username,password,email)
         # Create an instance of User
         user = User(username,email,password)
@@ -47,7 +47,7 @@ def posts():
         content = post.content.data
         user_id = current_user
         print('\n',title,content)
-        post = Post(title,content,user_id)
+        post = PostForm(title,content,user_id)
 
         db.session.add(post,posts)
 
@@ -98,7 +98,10 @@ def login():
     if request.method == 'POST' and form.validate():
         email = form.email.data
         password = form.password.data
-        logged_user = User.query.filter(User.email == email).first()
+        logged_user = User.query.filter_by(email= email).first()
+        print(logged_user.password)
+        print(password)
+        print(check_password_hash(logged_user.password, password))
         if logged_user and check_password_hash(logged_user.password, password):
             login_user(logged_user)
             return redirect(url_for('home'))

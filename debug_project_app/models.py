@@ -19,13 +19,13 @@ class User(db.Model,UserMixin):
     id = db.Column(db.Integer, primary_key = True)
     username = db.Column(db.String(150), nullable = False, unique = True)
     email = db.Column(db.String(150), nullable = False, unique = True)
-    password = db.Column(db.String(256), nullable = False)
+    password = db.Column(db.String, nullable = False)
     post = db.relationship('Post', backref = 'author', lazy = True)
 
     def __init__(self,username,email,password):
         self.username = username
         self.email = email
-        self.password = self.set_password(password)
+        self.password = password
 
         def set_password(self,password):
             self.pw_hash = generate_password_hash(password)

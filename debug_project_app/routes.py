@@ -13,7 +13,7 @@ from flask_login import login_required,login_user, current_user,logout_user
 # Home Route
 @app.route('/')
 def home():
-    posts = Post.query.all
+    posts = Post.query.all()
     return render_template("home.html", posts = posts)
 
 # Register Route

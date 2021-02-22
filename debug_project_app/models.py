@@ -25,11 +25,11 @@ class User(db.Model,UserMixin):
     def __init__(self,username,email,password):
         self.username = username
         self.email = email
-        self.password = password
+        self.password = self.set_password(password)
 
-        def set_password(self,password):
-            self.pw_hash = generate_password_hash(password)
-            return self.pw_hash
+    def set_password(self,password):
+        self.pw_hash = generate_password_hash(password)
+        return self.pw_hash
 
     def __repr__(self):
         return f'{self.username} has been created with {self.email}'
